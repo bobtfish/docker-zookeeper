@@ -1,5 +1,7 @@
 #!/bin/bash
 
+RUNARG="$1"
+
 if [ "$ZK_ID" == "" ];then
     echo "ZK_ID not set, defaulting to 1"
     ZK_ID=1
@@ -11,7 +13,11 @@ if [ "$?" != "0" ]; then
 fi
 mkdir /tmp/zookeeper
 echo -n $ZK_ID > /tmp/zookeeper/myid
-if [ "$1" == "zookeeper" ];then
+SERVERS="$(env | grep ZK_HOST | sed -e's/ZK_HOST_/server./')"
+echo -e "Servers:\n$SERVERS"
+echo "$SERVERS" >> /opt/zookeeper-3.4.6/bin/../conf/zoo.cfg
+
+if [ "$RUNARG" == "zookeeper" ];then
     exec /opt/zookeeper-3.4.6/bin/zkServer.sh start-foreground
 fi
 exec /bin/bash
