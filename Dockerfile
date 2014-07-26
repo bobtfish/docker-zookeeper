@@ -1,4 +1,6 @@
 FROM jplock/zookeeper:3.4.6
-ENTRYPOINT []
-CMD ["/opt/zookeeper-3.4.6/bin/zkServer.sh", "start-foreground"]
+ADD run.sh /run.sh
+RUN chmod 755 /run.sh
+ENTRYPOINT "/run.sh"
+CMD ["zookeeper"]
 
